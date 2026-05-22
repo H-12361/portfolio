@@ -3,8 +3,8 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { personalInfo } from "../data";
 import { SectionLabel } from "./About";
 
-const API_BASE = "/api/v1";
-
+// const API_BASE = "/api/v1";
+const API_BASE = import.meta.env.VITE_API_BASE_URL + "/api/v1";
 // ─── Confirmation Screen ───
 function ConfirmationCard({ name, message, onClose }) {
   const steps = [
