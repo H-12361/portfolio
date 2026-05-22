@@ -1,0 +1,146 @@
+export const personalInfo = {
+  name: "Harshit Tiwari",
+  title: "MERN Stack Developer",
+  tagline: "Building fast, clean, production-ready web apps.",
+  email: "harshittiwari61200@gmail.com",
+  phone: "+91 6386068863",
+  location: "Indore, Madhya Pradesh",
+  linkedin: "https://www.linkedin.com/in/harshit-tiwari-2b5546232/",
+  github: "https://github.com/H-12361",
+  githubUsername: "H-12361",
+  available: true,
+};
+
+export const skills = [
+  {
+    category: "Frontend",
+    color: "#64ffda",
+    icon: "🖥",
+    items: ["React.js", "Redux / Context API", "Framer Motion", "Tailwind CSS", "Material UI", "HTML5", "CSS3", "EJS"],
+  },
+  {
+    category: "Backend",
+    color: "#a78bfa",
+    icon: "⚙️",
+    items: ["Node.js", "Express.js", "REST API Design", "MVC Architecture", "JWT Auth", "Passport.js"],
+  },
+  {
+    category: "Database",
+    color: "#38bdf8",
+    icon: "🗄",
+    items: ["MongoDB", "Mongoose", "CRUD Operations"],
+  },
+  {
+    category: "Tools",
+    color: "#fb923c",
+    icon: "🛠",
+    items: ["Git", "GitHub", "Postman", "VS Code", "Vercel"],
+  },
+];
+
+export const projects = [
+  {
+    id: 1,
+    title: "Petroshop Platform",
+    subtitle: "Live Production Platform",
+    desc: "Contributed to a live petroleum e-commerce platform serving real customers. Built admin panels, dashboards, and user management modules with React.js + Node.js/Express.js backend.",
+    longDesc: "Developed 10+ reusable React components for order management, improving render performance by ~25%. Designed and integrated 8+ RESTful APIs with average response time under 300ms. Implemented JWT-based authentication and resolved 15+ production bugs, significantly improving platform stability.",
+    tech: ["React.js", "Node.js", "Express.js", "MongoDB", "JWT", "REST API"],
+    github: null,
+    live: "https://thepetroshop.com/login",
+    badge: "Production",
+    badgeColor: "#64ffda",
+    highlight: true,
+    icon: "⛽",
+  },
+  {
+    id: 2,
+    title: "Interior Design Website",
+    subtitle: "Full Stack Application",
+    desc: "Full-stack interior design platform with beautiful UI showcasing design portfolios. Built with modern web technologies for a seamless user experience.",
+    longDesc: "A stunning interior design website featuring project galleries, service listings, and contact forms. Built with a focus on visual appeal and responsive design across all devices.",
+    tech: ["HTML5", "CSS3", "JavaScript", "Node.js", "Netlify"],
+    github: "https://github.com/H-12361/Intrior_Designed",
+    live: "https://thriving-semolina-5f23bc.netlify.app/",
+    badge: "Full Stack",
+    badgeColor: "#a78bfa",
+    highlight: false,
+    icon: "🏠",
+  },
+  {
+    id: 3,
+    title: "Salon Website",
+    subtitle: "React Frontend",
+    desc: "Responsive React.js salon website with smooth Framer Motion animations and Material UI components. Deployed on Vercel with optimized asset loading.",
+    longDesc: "Consistent cross-browser rendering across Chrome, Firefox, and Safari. Beautiful UI covering Home, Services, About, and Contact pages with fluid animations.",
+    tech: ["React.js", "Framer Motion", "Material UI", "CSS3", "Vercel"],
+    github: "https://github.com/H-12361/Salon",
+    live: "https://salon-nine-eta.vercel.app/",
+    badge: "React",
+    badgeColor: "#38bdf8",
+    highlight: false,
+    icon: "💇",
+  },
+  {
+    id: 4,
+    title: "E-Commerce Website",
+    subtitle: "Frontend Project",
+    desc: "Fully functional e-commerce website with product listings and persistent shopping cart using localStorage. Consistent UI layout across 5+ screen sizes.",
+    longDesc: "Built during InternPe virtual internship. Features responsive product grid, cart management, and smooth UX interactions using vanilla JavaScript.",
+    tech: ["HTML5", "CSS3", "JavaScript", "localStorage"],
+    github: "https://github.com/H-12361",
+    live: null,
+    badge: "Frontend",
+    badgeColor: "#fb923c",
+    highlight: false,
+    icon: "🛒",
+  },
+];
+
+export const experience = [
+  {
+    role: "Full Stack Developer",
+    company: "Digital Fly High Solutions",
+    location: "Indore",
+    period: "Dec 2025 – Present",
+    type: "Full Time",
+    color: "#64ffda",
+    points: [
+      "Contributed to Petroshop — a live production platform serving real customers — building React.js frontend and Node.js/Express.js backend.",
+      "Developed 10+ reusable React components for order management and user workflow modules, improving render performance by ~25%.",
+      "Designed and integrated 8+ RESTful APIs with average response time under 300ms.",
+      "Implemented JWT-based authentication and resolved 15+ production bugs.",
+    ],
+  },
+  {
+    role: "Frontend Developer Intern",
+    company: "InternPe",
+    location: "Virtual",
+    period: "Mar 2025 – Apr 2025",
+    type: "Internship",
+    color: "#a78bfa",
+    points: [
+      "Built a fully functional e-commerce website with product listings and persistent shopping cart.",
+      "Improved cross-device responsiveness achieving consistent UI layout across 5+ screen sizes.",
+    ],
+  },
+];
+
+export const education = [
+  {
+    degree: "Master of Computer Applications",
+    short: "MCA",
+    school: "SAGE University, Indore",
+    period: "2024 – 2026",
+    note: "Result Awaited",
+    color: "#64ffda",
+  },
+  {
+    degree: "Bachelor of Computer Applications",
+    short: "BCA",
+    school: "Mahatma Gandhi Kashi Vidyapith",
+    period: "2021 – 2024",
+    note: "69%",
+    color: "#a78bfa",
+  },
+];
