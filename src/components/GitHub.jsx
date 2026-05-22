@@ -517,8 +517,7 @@ export default function GitHub() {
                         {repo.language}
                       </span>
                     )}
-                    <span style={{ color: "#495670", fontSize: "0.75rem" }}>⭐ {repo.stargazers_count}</span>
-                    <span style={{ color: "#495670", fontSize: "0.75rem" }}>🍴 {repo.forks_count}</span>
+                   
                   </div>
                 </a>
               ))}

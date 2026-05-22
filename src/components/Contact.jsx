@@ -326,8 +326,8 @@ export default function Contact() {
                 <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
                   <div className="form-row">
                     {[
-                      { key: "name", label: "Your Name", type: "text", placeholder: "John Doe" },
-                      { key: "email", label: "Email Address", type: "email", placeholder: "john@example.com" },
+                      { key: "name", label: "Your Name", type: "text", placeholder: "Karan" },
+                      { key: "email", label: "Email Address", type: "email", placeholder: "harshit@gmail.com" },
                     ].map(({ key, label, type, placeholder }) => (
                       <div key={key}>
                         <label style={{ color: "#495670", fontSize: "0.75rem", display: "block", marginBottom: 8, letterSpacing: "0.05em", textTransform: "uppercase" }}>
