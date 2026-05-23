@@ -11,23 +11,17 @@ connectDB();
 const app = express();
 
 // ─── CORS Fix ───
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://portfolio-axipbup2y-h-12361s-projects.vercel.app",  // ← naya URL
-  "https://portfolio-49f6fgzaw-h-12361s-projects.vercel.app",  // ← purana URL (rakhlo)
-  process.env.CLIENT_URL,
-].filter(Boolean);
-
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true); // Postman ke liye
-    if (allowedOrigins.includes(origin)) return callback(null, true);
+    if (!origin) return callback(null, true);
+    if (/\.vercel\.app$/.test(origin) || origin === "http://localhost:5173")
+      return callback(null, true);
     callback(new Error(`CORS blocked: ${origin}`));
   },
   methods: ["GET", "POST", "OPTIONS"],
   credentials: true,
 }));
-app.options("*", cors()); // Preflight requests handle karo
+app.options("*", cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
