@@ -90,7 +90,7 @@ export default function Hero() {
           onMouseLeave={e => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = ""; }}>
             View My Work →
           </a>
-          <a href="/download/Harshit_Tiwari_Resume_May.pdf" download style={{
+          <a href="/Harshit_Tiwari_Resume_May.pdf" download style={{
             background: "rgba(255,255,255,0.06)", color: "#e2e8f0",
             border: "1px solid rgba(255,255,255,0.12)",
             padding: "12px 28px", borderRadius: 8, fontWeight: 600, fontSize: "0.85rem",
