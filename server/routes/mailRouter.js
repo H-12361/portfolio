@@ -38,8 +38,6 @@ router.post("/send", async (req, res) => {
     // ─── 2. User ko confirmation email ───
     const userHtml = `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #1e3a5f; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
-        
-        <!-- Header -->
         <div style="background: linear-gradient(135deg, #060d1b 0%, #0a1628 100%); padding: 36px 30px; text-align: center; border-bottom: 2px solid #00d4aa;">
           <div style="display: inline-block; background: rgba(0,212,170,0.1); border: 1px solid rgba(0,212,170,0.35); border-radius: 8px; padding: 8px 16px; margin-bottom: 16px;">
             <span style="font-family: monospace; color: #00d4aa; font-weight: 700; font-size: 14px;">&lt;/&gt; Harshit Tiwari</span>
@@ -48,21 +46,15 @@ router.post("/send", async (req, res) => {
           <p style="margin: 10px 0 0; color: #00d4aa; font-size: 14px; letter-spacing: 0.5px;">Thank you for reaching out ✨</p>
         </div>
 
-        <!-- Body -->
         <div style="padding: 32px 30px; background-color: #0d1e38; color: #e2e8f0;">
           <p style="font-size: 16px; margin: 0 0 20px; color: #ccd6f6;">Hi <strong style="color: #00d4aa;">${name}</strong>,</p>
-          
           <p style="font-size: 15px; line-height: 1.8; color: #8892a4; margin: 0 0 24px;">
             Your submission has been successfully recorded. Our team will contact you within <strong style="color: #e2e8f0;">24 hours</strong>.
           </p>
-
-          <!-- Info box -->
           <div style="background: rgba(0,212,170,0.05); border: 1px solid rgba(0,212,170,0.2); border-radius: 10px; padding: 20px; margin-bottom: 28px;">
             <p style="margin: 0 0 12px; font-size: 12px; color: #00d4aa; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700;">Your Message Summary</p>
             <p style="margin: 0; font-size: 14px; color: #8892a4; line-height: 1.7; font-style: italic;">"${message.length > 120 ? message.slice(0, 120) + "..." : message}"</p>
           </div>
-
-          <!-- What's next -->
           <div style="margin-bottom: 28px;">
             <p style="margin: 0 0 14px; font-size: 13px; color: #00d4aa; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700;">What happens next?</p>
             <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -74,8 +66,6 @@ router.post("/send", async (req, res) => {
               `).join("")}
             </div>
           </div>
-
-          <!-- CTA -->
           <div style="text-align: center; margin-bottom: 8px;">
             <a href="mailto:${process.env.EMAIL_USER}" style="display: inline-block; background: #00d4aa; color: #060d1b; padding: 12px 32px; border-radius: 8px; font-weight: 700; font-size: 14px; text-decoration: none; letter-spacing: 0.5px;">
               Reply to this Email
@@ -83,7 +73,6 @@ router.post("/send", async (req, res) => {
           </div>
         </div>
 
-        <!-- Footer -->
         <div style="background: #060d1b; padding: 20px 30px; text-align: center; border-top: 1px solid rgba(255,255,255,0.06);">
           <p style="margin: 0 0 6px; color: #4a5568; font-size: 12px;">This is an automated confirmation. Please do not reply directly.</p>
           <p style="margin: 0; color: #2d3748; font-size: 11px;">&copy; ${new Date().getFullYear()} Harshit Tiwari &mdash; MERN Stack Developer</p>
@@ -91,18 +80,25 @@ router.post("/send", async (req, res) => {
       </div>
     `;
 
-    // ─── Send both emails in parallel ───
-    await Promise.all([
-      sendEmail({
-        to: process.env.EMAIL_USER,
-        subject: `🚀 Portfolio Lead: ${name}`,
-        html: adminHtml,
-      }),
-      sendEmail({
-        to: email,
-        subject: `We received your message, ${name}! 🚀`,
-        html: userHtml,
-      }),
+    // ─── Timeout + Send emails ───
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Email timeout after 10s")), 10000)
+    );
+
+    await Promise.race([
+      Promise.all([
+        sendEmail({
+          to: process.env.EMAIL_USER,
+          subject: `🚀 Portfolio Lead: ${name}`,
+          html: adminHtml,
+        }),
+        sendEmail({
+          to: email,
+          subject: `We received your message, ${name}! 🚀`,
+          html: userHtml,
+        }),
+      ]),
+      timeout,
     ]);
 
     res.status(200).json({
