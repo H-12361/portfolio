@@ -10,12 +10,24 @@ connectDB();
 
 const app = express();
 
-// ─── Middleware — order matters ───
+// ─── CORS Fix ───
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://portfolio-49f6fgzaw-h-12361s-projects.vercel.app",
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || "*",
-  methods: ["GET", "POST"],
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true); // Postman ke liye
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error(`CORS blocked: ${origin}`));
+  },
+  methods: ["GET", "POST", "OPTIONS"],
   credentials: true,
 }));
+app.options("*", cors()); // Preflight requests handle karo
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -24,7 +36,7 @@ app.use("/api/v1/mail", mailRouter);
 app.use("/api/v1/contacts", contactRoutes);
 
 // ─── Health check ───
-app.get("/", (req, res) => res.json({ status: "Server is running " }));
+app.get("/", (req, res) => res.json({ status: "Server is running" }));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
