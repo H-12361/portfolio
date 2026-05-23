@@ -4,7 +4,7 @@ import { personalInfo } from "../data";
 import { SectionLabel } from "./About";
 
 // const API_BASE = "/api/v1";
-const API_BASE = import.meta.env.VITE_API_BASE_URL + "/api/v1";
+const API_BASE = import.meta.env.VITE_API_BASE_URL.replace(/\/$/, "") + "/api/v1";
 // ─── Confirmation Screen ───
 function ConfirmationCard({ name, message, onClose }) {
   const steps = [
@@ -169,8 +169,48 @@ export default function Contact() {
 
   const handleChange = (key) => (e) => setForm(f => ({ ...f, [key]: e.target.value }));
 
-  const handleSubmit = async () => {
+  // const handleSubmit = async () => {
+  //   setError("");
+  //   if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+  //     setError("Please fill in all fields before sending.");
+  //     return;
+  //   }
+  //   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+  //     setError("Please enter a valid email address.");
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   try {
+  //     const [mailRes] = await Promise.allSettled([
+  //       fetch(`${API_BASE}/mail/send`, {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify(form),
+  //       }),
+  //       fetch(`${API_BASE}/contacts/contact`, {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify(form),
+  //       }),
+  //     ]);
+
+  //     if (mailRes.status === "fulfilled" && mailRes.value.ok) {
+  //       setSubmittedData({ name: form.name, message: form.message });
+  //       setSubmitted(true);
+  //       setForm({ name: "", email: "", message: "" });
+  //     } else {
+  //       setError("Could not send. Please email me directly.");
+  //     }
+  //   } catch {
+  //     setError("Server error. Please try again or email directly.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+const handleSubmit = async () => {
     setError("");
+    
+    // 1. Validation
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
       setError("Please fill in all fields before sending.");
       return;
@@ -179,35 +219,42 @@ export default function Contact() {
       setError("Please enter a valid email address.");
       return;
     }
-    setLoading(true);
-    try {
-      const [mailRes] = await Promise.allSettled([
-        fetch(`${API_BASE}/mail/send`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        }),
-        fetch(`${API_BASE}/contacts/contact`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        }),
-      ]);
 
-      if (mailRes.status === "fulfilled" && mailRes.value.ok) {
+    setLoading(true);
+
+    try {
+      // 2. Step 1: Database mein contact save karo (Wait for it)
+      const contactRes = await fetch(`${API_BASE}/contacts/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      // 3. Step 2: Email bhejo (Wait for it)
+      const mailRes = await fetch(`${API_BASE}/mail/send`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      // 4. Success check: Agar mail chala gaya toh success dikhao
+      if (mailRes.ok) {
         setSubmittedData({ name: form.name, message: form.message });
         setSubmitted(true);
         setForm({ name: "", email: "", message: "" });
       } else {
-        setError("Could not send. Please email me directly.");
+        // Agar backend error return kare (e.g. 500)
+        const errorData = await mailRes.json().catch(() => ({}));
+        setError(errorData.message || "Email service busy. Please try again later.");
       }
-    } catch {
-      setError("Server error. Please try again or email directly.");
+    } catch (err) {
+      // 5. Network/Server down error
+      console.error("Submission Error:", err);
+      setError("Server is not responding. Please check your connection.");
     } finally {
       setLoading(false);
     }
   };
-
   const inputStyle = (key) => ({
     width: "100%", boxSizing: "border-box",
     background: "#0c1220",
