@@ -13,7 +13,8 @@ const app = express();
 // ─── CORS Fix ───
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://portfolio-49f6fgzaw-h-12361s-projects.vercel.app",
+  "https://portfolio-axipbup2y-h-12361s-projects.vercel.app",  // ← naya URL
+  "https://portfolio-49f6fgzaw-h-12361s-projects.vercel.app",  // ← purana URL (rakhlo)
   process.env.CLIENT_URL,
 ].filter(Boolean);
 
