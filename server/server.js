@@ -14,7 +14,11 @@ const app = express();
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
-    if (/\.vercel\.app$/.test(origin) || origin === "http://localhost:5173")
+    if (
+      /\.vercel\.app$/.test(origin) || 
+      /\.vusercontent\.net$/.test(origin) ||
+      origin === "http://localhost:5173"
+    )
       return callback(null, true);
     callback(new Error(`CORS blocked: ${origin}`));
   },
