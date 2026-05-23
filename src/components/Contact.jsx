@@ -3,6 +3,160 @@ import { motion, useInView } from "framer-motion";
 import { personalInfo } from "../data";
 import { SectionLabel } from "./About";
 
+// const API_BASE = "/api/v1";
+const API_BASE = import.meta.env.VITE_API_BASE_URL.replace(/\/$/, "") + "/api/v1";
+// ─── Confirmation Screen ───
+function ConfirmationCard({ name, message, onClose }) {
+  const steps = [
+    "Your message is safely stored in our system.",
+    "Harshit will personally review your inquiry.",
+    "You'll receive a reply within 24 hours.",
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.94, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.94, y: 20 }}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      style={{
+        background: "#0d1e38",
+        border: "1px solid rgba(0,212,170,0.25)",
+        borderRadius: 16,
+        overflow: "hidden",
+      }}
+    >
+      {/* Header */}
+      <div style={{
+        background: "linear-gradient(135deg, #060d1b 0%, #0a1628 100%)",
+        borderBottom: "2px solid #00d4aa",
+        padding: "32px 28px",
+        textAlign: "center",
+        position: "relative",
+      }}>
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          style={{
+            position: "absolute", top: 16, right: 16,
+            background: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: 8, width: 32, height: 32,
+            color: "#8892a4", cursor: "pointer", fontSize: 16,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            transition: "all 0.2s",
+          }}
+          onMouseEnter={e => { e.currentTarget.style.background = "rgba(0,212,170,0.1)"; e.currentTarget.style.color = "#00d4aa"; e.currentTarget.style.borderColor = "rgba(0,212,170,0.3)"; }}
+          onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.06)"; e.currentTarget.style.color = "#8892a4"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; }}
+        >✕</button>
+
+        {/* Success icon */}
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+          style={{
+            width: 60, height: 60, borderRadius: "50%",
+            background: "rgba(0,212,170,0.12)",
+            border: "2px solid rgba(0,212,170,0.4)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            margin: "0 auto 16px",
+            fontSize: "1.6rem",
+          }}
+        >✓</motion.div>
+
+        <div style={{
+          display: "inline-block",
+          background: "rgba(0,212,170,0.1)", border: "1px solid rgba(0,212,170,0.35)",
+          borderRadius: 8, padding: "4px 14px", marginBottom: 14,
+        }}>
+          <span style={{ fontFamily: "monospace", color: "#00d4aa", fontWeight: 700, fontSize: 13 }}>&lt;/&gt; Harshit Tiwari</span>
+        </div>
+
+        <h2 style={{ margin: "0 0 8px", color: "#ffffff", fontSize: "clamp(20px,4vw,26px)", fontWeight: 800 }}>
+          Message Received!
+        </h2>
+        <p style={{ margin: 0, color: "#00d4aa", fontSize: "0.85rem", letterSpacing: "0.5px" }}>
+          Thank you for reaching out ✨
+        </p>
+      </div>
+
+      {/* Body */}
+      <div style={{ padding: "28px" }}>
+        <p style={{ fontSize: "0.95rem", margin: "0 0 20px", color: "#ccd6f6" }}>
+          Hi <strong style={{ color: "#00d4aa" }}>{name}</strong>,
+        </p>
+        <p style={{ fontSize: "0.9rem", lineHeight: 1.8, color: "#8892a4", margin: "0 0 24px" }}>
+          Your submission has been successfully recorded. Our team will contact you within{" "}
+          <strong style={{ color: "#e2e8f0" }}>24 hours</strong>.
+        </p>
+
+        {/* Message preview */}
+        <div style={{
+          background: "rgba(0,212,170,0.05)",
+          border: "1px solid rgba(0,212,170,0.2)",
+          borderRadius: 10, padding: "16px 20px", marginBottom: 24,
+        }}>
+          <p style={{ margin: "0 0 8px", fontSize: "11px", color: "#00d4aa", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 700 }}>
+            Your Message
+          </p>
+          <p style={{ margin: 0, fontSize: "0.85rem", color: "#8892a4", lineHeight: 1.7, fontStyle: "italic" }}>
+            "{message.length > 120 ? message.slice(0, 120) + "…" : message}"
+          </p>
+        </div>
+
+        {/* What's next */}
+        <p style={{ margin: "0 0 12px", fontSize: "11px", color: "#00d4aa", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 700 }}>
+          What happens next?
+        </p>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 28 }}>
+          {steps.map((step, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 + i * 0.1 }}
+              style={{
+                display: "flex", alignItems: "flex-start", gap: 12,
+                padding: "12px 14px",
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.06)",
+                borderRadius: 8,
+              }}
+            >
+              <span style={{
+                minWidth: 24, height: 24, borderRadius: "50%",
+                background: "rgba(0,212,170,0.15)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: "12px", color: "#00d4aa", fontWeight: 700, flexShrink: 0,
+              }}>{i + 1}</span>
+              <span style={{ color: "#8892a4", fontSize: "0.85rem", lineHeight: 1.5 }}>{step}</span>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Back to portfolio button */}
+        <button
+          onClick={onClose}
+          style={{
+            width: "100%",
+            background: "#00d4aa", color: "#060d1b",
+            border: "none", borderRadius: 8,
+            padding: "13px", fontWeight: 700, fontSize: "0.9rem",
+            cursor: "pointer", transition: "opacity 0.2s",
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+          }}
+          onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
+          onMouseLeave={e => e.currentTarget.style.opacity = "1"}
+        >
+          ← Back to Portfolio
+        </button>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Main Contact ───
 export default function Contact() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
